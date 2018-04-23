@@ -1,9 +1,11 @@
 package control;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 import model.DimensionType;
 import model.Matrix;
+import model.Vector;
 
 public class TransformationCalculator {
 	private DimensionType dimension = null;
@@ -127,8 +129,22 @@ public class TransformationCalculator {
 		return z;
 	}
 
-	public void rotationVectors() {
+	public Matrix rotationVectors(double nx, double ny, double nz, double thetaValue) {
+		Matrix resultMatrix = new Matrix();
+		double[][] values = new double[3][3];
+		values[0][0] = (((nx * nx) * (1 - cosineTheta(thetaValue)) + cosineTheta(thetaValue)));
+		values[0][1] = ((nx * ny) * (1 - cosineTheta(thetaValue) - (nz * sineTheta(thetaValue))));
+		values[0][2] = ((ny * nz) * (1 - cosineTheta(thetaValue) + (ny * sineTheta(thetaValue))));
 
+		values[1][0] = ((nx * ny) * (1 - cosineTheta(thetaValue) + (nz * sineTheta(thetaValue))));
+		values[1][1] = ((ny * ny) * (1 - cosineTheta(thetaValue) + cosineTheta(thetaValue)));
+		values[1][2] = ((ny * nz) * (1 - cosineTheta(thetaValue) - (nx * sineTheta(thetaValue))));
+
+		values[2][0] = ((nx * nz) * (1 - cosineTheta(thetaValue) - (ny * sineTheta(thetaValue))));
+		values[2][1] = ((ny * nz) * (1 - cosineTheta(thetaValue) + (nx * sineTheta(thetaValue))));
+		values[2][2] = (((nz * nz) * (1 - cosineTheta(thetaValue) + cosineTheta(thetaValue))));
+		resultMatrix.setCurrentMatrix(values);
+		return resultMatrix;
 	}
 
 	public void scale() {
